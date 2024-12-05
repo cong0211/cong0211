@@ -1,0 +1,48 @@
+!pip install gradio
+
+import gradio as gr
+
+def quiz(question1, question2, question3, question4):
+    score = 0
+    total_questions = 3  # Adjust if you change the number of scored questions
+
+    responses = {
+        'Question 1: What is the name of the main character?': question1,
+        'Question 2: What is the name of the village?': question2,
+        'Question 3: What did Maria have a passion for?': question3,
+        'Question 4: Your dreams can come true with belief, hard work, and a little bit of what?': question4
+    }
+
+    correct_answers = {
+        'Question 1: What is the name of the main character?': 'maria',
+        'Question 2: What is the name of the village?': 'lila',
+        'Question 3: What did Maria have a passion for?': 'art',
+        'Question 4: Your dreams can come true with belief, hard work, and a little bit of what?': 'luck'  # Adjust this if needed
+    }
+
+    output = []
+    for question, user_answer in responses.items():
+        if user_answer.lower() == correct_answers[question]:
+            score += 1
+            output.append(f"{question} - Correct!")
+        else:
+            output.append(f"{question} - Wrong Answer :(")
+
+    mark = (score / total_questions) * 100
+    output.append(f"Thank you for taking this small quiz, you answered {score} questions correctly!")
+    output.append(f"Marks obtained: {mark}%")
+    output.append("BYE!")
+    return "\n".join(output)
+
+iface = gr.Interface(
+    fn=quiz,
+    inputs=[gr.Textbox(label="Question 1: What is the name of the main character?"),
+            gr.Textbox(label="Question 2: What is the name of the village?"),
+            gr.Textbox(label="Question 3: What did Maria have a passion for?"),
+            gr.Textbox(label="Question 4: Your dreams can come true with belief, hard work, and a little bit of what?")],
+    outputs="text",
+    title="G1 Listening Quiz",
+    description="Welcome to G1 Listening Quiz - Remember to only use lowercase letters. Are you ready to take the quiz?"
+)
+
+iface.launch()
