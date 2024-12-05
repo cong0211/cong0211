@@ -1,0 +1,81 @@
+import gradio as gr
+
+# 문제와 정답을 정의
+questions = [
+    {
+        "question": "1. How are zookeepers preparing the bears for the journey?",
+        "options": [
+            "A. By letting them roam freely.",
+            "B. By putting them in crates and feeding them honey-sweetened water.",
+            "C. By taking them on a farewell tour of the zoo."
+        ],
+        "answer": "C. By taking them on a farewell tour of the zoo."
+    },
+    {
+        "question": "2. What challenges do giant panda populations face, according to the passage?",
+        "options": [
+            "A. High birth rates and loss of habitat.",
+            "B. Habitat loss and low birth rates.",
+            "C. Increased bamboo availability and climate change."
+        ],
+        "answer": "B. Habitat loss and low birth rates."
+    },
+    {
+        "question": "3. What role have pandas played in international relations, according to the passage?",
+        "options": [
+            "A. They have been symbols of goodwill and friendship.",
+            "B. They have been used in trade negotiations.",
+            "C. They have lived at the National Zoo for decades."
+        ],
+        "answer": "A. They have been symbols of goodwill and friendship."
+    },
+    {
+        "question": "4. Why are pandas going back to China from zoos in the United States?",
+        "options": [
+            "A. Because of disagreements over trade and technology.",
+            "B. Because the pandas want to go on vacation.",
+            "C. Because pandas are not liked in the U.S."
+        ],
+        "answer": "A. Because of disagreements over trade and technology."
+    }
+]
+
+# 정답 확인 함수
+def check_answer(question_index, selected_option):
+    # 문제의 정답과 학생이 선택한 답을 비교
+    correct_answer = questions[question_index]['answer']
+    
+    if selected_option == correct_answer:
+        return "Correct!"
+    else:
+        return f"Incorrect. The correct answer is: {correct_answer}"
+
+# Gradio 인터페이스 설정
+def create_interface():
+    with gr.Blocks() as app:
+        gr.Markdown("# 4. Read for details 1: Hand out the whole text. Ask students to choose answers from multiple choices.")
+        
+        for i, question in enumerate(questions):
+            gr.Markdown(f"### {question['question']}")  # 문제 표시
+            radio_buttons = gr.Radio(
+                choices=question['options'],
+                label="Select your answer",
+                interactive=True,
+            )
+            
+            # 정답 확인 버튼
+            submit_button = gr.Button(value="Check Answer")
+            output = gr.Textbox(label="Feedback", interactive=False)
+            
+            # 버튼 클릭 시 정답 확인
+            submit_button.click(
+                fn=check_answer,
+                inputs=[gr.State(i), radio_buttons],  # 문제 인덱스와 선택한 옵션을 전달
+                outputs=output
+            )
+    
+    return app
+
+# 앱 실행
+app = create_interface()
+app.launch(share=True)
