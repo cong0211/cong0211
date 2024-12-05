@@ -1,3 +1,4 @@
+!pip install gradio
 import gradio as gr
 
 # 문제와 정답을 정의
