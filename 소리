@@ -1,0 +1,8 @@
+from pydub import AudioSegment
+
+# 소리 파일 읽기
+audio = AudioSegment.from_file("C:\Users\헤어\Desktop/incorrect (1).wav", format=".wav")
+
+# 데이터를 확인하거나 출력
+print(audio.frame_rate)  # 샘플링 레이트 확인
+print(audio.channels)    # 채널 개수 확인
